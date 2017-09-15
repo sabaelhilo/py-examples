@@ -39,8 +39,12 @@ counts.most_common(10)
 
 # using pandas
 frame = DataFrame(records)
+
+# how to count number of rows of a value (series)
 tz_counts = frame['tz'].value_counts()
 top = tz_counts[:10]
+
+# replace na with missing and '' with unknown
 clean_tz = frame['tz'].fillna('Missing')
 clean_tz[clean_tz == ''] = 'Unknown'
 tz_counts = clean_tz.value_counts()
