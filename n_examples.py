@@ -84,11 +84,9 @@ select_row_columns = arr6[[1, 5, 7, 2], [0, 3, 1, 2]]  # this returns a 1d array
 select_row_all_columns = arr6[np.ix_([1, 5, 7, 2], [0, 3, 1, 2])]  # returns 2d array where its (row, [0, 3, 1, 2])
 
 # transpose and axis swapping
-
 arr7 = np.arange(15).reshape((3, 5))
 arr7_t = arr7.T
 dot_product = np.dot(arr7_t, arr7)
-
 
 # universal functions
 # unary ufuncs
@@ -103,7 +101,6 @@ y = np.random.randn(8)
 np.maximum(x, y)  # elementwise maximum
 
 # Data processing using arrays
-
 points = np.arange(-5, 5, 0.01)
 xs, ys = np.meshgrid(points, points)
 z = np.sqrt(xs ** 2 + ys ** 2)
