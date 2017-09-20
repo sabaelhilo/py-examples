@@ -1,7 +1,6 @@
 import pandas as pd
 from pandas import DataFrame, Series
 import numpy as np
-from pandas_datareader import data
 
 # series - one dimensional array and an array of data label - index
 obj = Series([4, 7, -5, 3])
