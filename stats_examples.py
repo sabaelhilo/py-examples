@@ -38,7 +38,7 @@ n1, n2 = len(group1), len(group2)
 pooled_var = (n1 * group1.age.var() + n2 * group2.age.var()) / (n1 + n2)
 d_cohen = mean_diff / math.sqrt(pooled_var)  # difference in means is 0.2 standard deviations
 
-# probabilities
+# probabilities - pmf probability mass function
 sum_age = movie_data.age.value_counts()
 percentage = sum_age / sum_age.values.sum()
 movie_data['age_prob'] = percentage[movie_data.age].values
@@ -51,7 +51,8 @@ group_data = DataFrame({'group1': z, 'group2': group2_prob})
 group_data.hist(grid=False, bins=15)
 
 # cdf cumulative distribution function - maps from a value to its percentile rank
-# to evaluate cdf(x) we have to evaluate the fraction of values that are x or less than x - cdf is a step function
+# to evaluate cdf(x) where x is any value in the distribution we compute the
+# fraction of values in the distribution less than or equal to x - its a step function
 
 
 def eval_cdf(x, samples):
@@ -61,33 +62,15 @@ def eval_cdf(x, samples):
             count += 1
     return count / len(samples)
 
+vals = [1, 2, 2, 3, 5]
+
+e = [eval_cdf(v, vals) for v in vals]
+
+# e is 0.2, 0.6, 0.8, 1 can evaluate
+# cdf for values that don't appear in the sample
+# if x is greater than the largest value then cdf is 1
+
 group_data.group1[group_data['group1'] == 0] = np.nan
 group_data.quantile(0.5)
-
-
-# baby boom data
-names = ['time', 'gender', 'weights', 'minutes']
-baby_boom = pd.read_table('/Users/saba/Documents/babyboom.dat', header=None, names=names, sep='\s+')
-baby_boom_minute_diff = baby_boom.minutes.diff()
-cdf_diff = [eval_cdf(d, baby_boom_minute_diff) for d in baby_boom_minute_diff]
-plt.figure(3)
-plt.plot(list(baby_boom_minute_diff.values), cdf_diff, 'ro')
-
-cdf_minutes = [eval_cdf(d, baby_boom.minutes) for d in baby_boom.minutes]
-plt.figure(4)
-plt.plot(list(baby_boom.minutes.values), cdf_minutes, 'ro')
-
-# normal distribution
-baby_boom_mean = baby_boom.weights.mean()
-baby_boom_std = baby_boom.weights.std()
-plt.figure(5)
-# plt.plot(baby_boom.weights, 'ro')
-baby_boom.weights.hist(grid=False, bins=15)
-baby_boom_weight_cdf = [eval_cdf(w, baby_boom.weights) for w in baby_boom.weights]
-plt.figure(6)
-plt.plot(list(baby_boom.weights.values), baby_boom_weight_cdf, 'ro')
-
-normal_dist = stats.norm.cdf(baby_boom.weights.values, loc=baby_boom_mean, scale=baby_boom_std)
-plt.plot(list(baby_boom.weights.values), normal_dist, 'bo')
 
 plt.show()
